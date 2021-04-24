@@ -63,10 +63,17 @@ class Servo360:
     compass = Compass()
     print("Inserte un angulo: ")
     global anguloBase
-    if anguloBase < ina:
-      self.movePosAngles(compass, ina)
+    if ina < 90:
+      if anguloBase < ina:
+        self.movePosAngles(compass, ina)
+      else:
+        self.moveNegAngles(compass, ina)
     else:
-      self.moveNegAngles(compass, ina)
+      ina = ina + 180
+      if anguloBase < ina:
+        self.moveNegAngles(compass, ina)
+      else:
+        self.movePosAngles(compass, ina)
     anguloBase = ina
     print("ANGULO BASE: ", self.getServoAngle())
     servo1.stop()
