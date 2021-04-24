@@ -56,9 +56,9 @@ def defaultCallback(client, userdata, message):
 # Read in command-line parameters
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--endpoint", action="store", required=True, dest="host", help="a28yobe9j1e4my-ats.iot.us-east-2.amazonaws.com")
-parser.add_argument("-r", "--rootCA", action="store", required=True, dest="rootCAPath", help="x509_rasp_root.crt")
-parser.add_argument("-c", "--cert", action="store", dest="certificatePath", help="0a4170739b-certificate.pem.crt")
-parser.add_argument("-k", "--key", action="store", dest="privateKeyPath", help="0a4170739b-private.pem.key")
+parser.add_argument("-r", "--rootCA", action="store", required=True, dest="rootCAPath", help="x509")
+parser.add_argument("-c", "--cert", action="store", dest="certificatePath", help="certificate")
+parser.add_argument("-k", "--key", action="store", dest="privateKeyPath", help="private.key")
 parser.add_argument("-p", "--port", action="store", dest="port", type=int, help="Port number override")
 parser.add_argument("-w", "--websocket", action="store_true", dest="useWebsocket", default=False,
                     help="Use MQTT over WebSocket")
