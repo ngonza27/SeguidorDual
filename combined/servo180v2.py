@@ -205,6 +205,8 @@ class Servo180:
         180: 11.260000000000021,
       }
       altitud = sunpos.get_az_alt()[0]
+      if altitud < 0:
+	altitud = 0
       if(altitud < 90):
         altitud = altitud+90
       else:

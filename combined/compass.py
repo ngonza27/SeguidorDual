@@ -66,28 +66,26 @@ class Compass:
 
 	def get_angle(self):
 		chipid = bus.read_byte_data(Device_Address, 0x0d)
-		print(chipid)
 		self.Magnetometer_Init()
 
-		print (" Reading Heading Angle")
-		while True:
-    			[x1, y1, z] = self.get_data()
-    			if x1 is None or y1 is None:
-        			heading = 0
-    			else:
-        			heading=math.degrees(math.atan2(y1,x1))
+		#print (" Reading Heading Angle")
+    		[x1, y1, z] = self.get_data()
+    		if x1 is None or y1 is None:
+        		heading = 0
+    		else:
+        		heading=math.degrees(math.atan2(y1,x1))
 
-    			#check for sign
-    			if(heading < 0):
-        			heading = heading + 360.0 + math.degrees(declination)
+    		#check for sign
+    		if(heading < 0):
+        		heading = heading + 360.0 + math.degrees(declination)
 
-    			#check for sign
-			##    if(heading < 0.0):
-			##        heading = heading + 360.0
+    		#check for sign
+		##    if(heading < 0.0):
+		##        heading = heading + 360.0
 
-    			#Due to declination check for >360 degree
-    			elif(heading > 360.0):
-        			heading = heading - 360.0
+    		#Due to declination check for >360 degree
+    		elif(heading > 360.0):
+        		heading = heading - 360.0
 
-    			#print ("Heading Angle = %d" %heading)
-			return heading
+    		#print ("Heading Angle = %d" %heading)
+		return heading

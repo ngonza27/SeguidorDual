@@ -20,8 +20,7 @@ def obtenerDatos(client, userdata, message):
   servo180 = Servo180()
   servo360 = Servo360()
 
-  servo360.startingPos()
-  servo180.startingPos()
+
   print("publish parameters")
   #Data value
   deviceId = "rpi4-SeguidorDual"
@@ -50,9 +49,9 @@ def defaultCallback(client, userdata, message):
 # Read in command-line parameters
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--endpoint", action="store", required=True, dest="host", help="a28yobe9j1e4my-ats.iot.us-east-2.amazonaws.com")
-parser.add_argument("-r", "--rootCA", action="store", required=True, dest="rootCAPath", help="x509")
-parser.add_argument("-c", "--cert", action="store", dest="certificatePath", help="certificate")
-parser.add_argument("-k", "--key", action="store", dest="privateKeyPath", help="private.key")
+parser.add_argument("-r", "--rootCA", action="store", required=True, dest="rootCAPath", help="x509_rasp_root.crt")
+parser.add_argument("-c", "--cert", action="store", dest="certificatePath", help="0a4170739b-certificate.pem.crt")
+parser.add_argument("-k", "--key", action="store", dest="privateKeyPath", help="0a4170739b-private.pem.key")
 parser.add_argument("-p", "--port", action="store", dest="port", type=int, help="Port number override")
 parser.add_argument("-w", "--websocket", action="store_true", dest="useWebsocket", default=False,
                     help="Use MQTT over WebSocket")
@@ -134,22 +133,23 @@ time.sleep(5)
 loopCount = 0
 timeStart = time.time()
 
-tiempoMandarDatos = 15
+tiempoMandarDatos = 5
 while True:
 	timeNow = time.time()
 	if args.mode == 'both' or args.mode == 'publish':
-		print(timeStart , timeNow)
+		datosPanel = None
 		if (timeNow - timeStart) >= tiempoMandarDatos:
 			tiempoMandarDatos = timeNow
 			print("MANDAR DATOS")
 		        datosPanel = obtenerDatos(1,1,1)
 		#Mandar la informacion recolectada de los sensores...
-		try:
-			myAWSIoTMQTTClient.publish(topic1, datosPanel, 1)
-		except:
-			myAWSIoTMQTTClient.connect()
-			time.sleep(10)
-			myAWSIoTMQTTClient.publish(topic1, datosPanel, 1)
+		if datosPanel is not None:
+			try:
+				myAWSIoTMQTTClient.publish(topic1, datosPanel, 1)
+			except:
+				myAWSIoTMQTTClient.connect()
+				time.sleep(10)
+				myAWSIoTMQTTClient.publish(topic1, datosPanel, 1)
 		if args.mode == 'publish':
 			print('Published topic %s: %s\n' % (topic1, json_string))
 		loopCount += 1

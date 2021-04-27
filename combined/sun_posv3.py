@@ -8,12 +8,14 @@ class Sunpos:
 		gps = GPS()
                 thetime = datetime.now()
 		tz = -5
-		#data = gps.get_data()
-		alt, azm = 9, 10
-		if data != None:
-			#print(data)
-			lat = data[0]
-			lon = data[1]
-			alt, azm = sunpos(thetime, lat, lon, tz, dst=False)
-			print("Altitud:", alt, ", Azimuth:", azm)
-			return alt, azm
+		data = gps.get_data()
+		print(data)
+		while data is None:
+			data = gps.get_data()
+		lat = data[0]
+		lon = data[1]
+		alt, azm = sunpos(thetime, lat, lon, tz, dst=False)
+		print("Altitud:", alt, ", Azimuth:", azm)
+		return alt, azm
+
+

@@ -1,0 +1,4 @@
+a28yobe9j1e4my-ats.iot.us-east-2.amazonaws.com
+
+python ourBasicPubSub.py  -e a28yobe9j1e4my-ats.iot.us-east-2.amazonaws.com -r x509_rasp_root.crt -c 0a4170739b-certificate.pem.crt -k 0a4170739b-private.pem.key
+
