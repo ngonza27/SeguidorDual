@@ -196,11 +196,18 @@ anglesMap = {
 180 : 11.619999999999992 ,
 }
 
+
+def startingPos(self):
+  servo1.ChangeDutyCycle(7)
+  time.sleep(0.5)
+  servo1.ChangeDutyCycle(0)
+
+
 def mover_motor(angulo):
  print("angulo del motor:", angulo)
- #servo1.ChangeDutyCycle(anglesMap[angulo])
- #time.sleep(0.5)
- #servo1.ChangeDutyCycle(0)
+ servo1.ChangeDutyCycle(anglesMap[angulo])
+ time.sleep(0.5)
+ servo1.ChangeDutyCycle(0)
 
 
 while True:

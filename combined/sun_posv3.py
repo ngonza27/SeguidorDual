@@ -4,19 +4,16 @@ from gps_script import GPS
 
 class Sunpos:
 
-	def get_az_alt(self, gps):
-		thetime = datetime.now()
+	def get_az_alt(self):
+		gps = GPS()
+                thetime = datetime.now()
 		tz = -5
-		data = gps.get_data()
+		#data = gps.get_data()
+		alt, azm = 9, 10
 		if data != None:
 			#print(data)
 			lat = data[0]
 			lon = data[1]
 			alt, azm = sunpos(thetime, lat, lon, tz, dst=False)
-			print("Altitud:", alt, ", Azimuth:", azm, "latitud: ", lat, " Longitud: ", lon)
+			print("Altitud:", alt, ", Azimuth:", azm)
 			return alt, azm
-
-sun = Sunpos()
-gps = GPS()
-while True:
- sun.get_az_alt(gps)

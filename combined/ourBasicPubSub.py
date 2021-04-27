@@ -1,6 +1,10 @@
 
 
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+from vi_sensor import Sensorvi
+from servo180v2 import Servo180
+from servo360 import Servo360
+from sun_posv3 import Sunpos
 import logging
 import time
 import argparse
@@ -12,13 +16,19 @@ AllowedActions = ['both', 'publish', 'subscribe']
 
 # Custom MQTT message callback
 def obtenerDatos(client, userdata, message):
+  sensorVI = Sensorvi()
+  servo180 = Servo180()
+  servo360 = Servo360()
+
+  servo360.startingPos()
+  servo180.startingPos()
   print("publish parameters")
   #Data value
   deviceId = "rpi4-SeguidorDual"
-  voltaje = 32
-  corriente = 7
-  posicionX = 30
-  posicionZ = 240
+  voltaje = sensorVI.getVI()[0]
+  corriente = sensorVI.getVI()[1]
+  posicionX = servo360.setAngle() #base
+  posicionZ = servo180.mover_motor() #panel
   temperatura = 28
   #JSON
   data = json.dumps({ 'deviceId': deviceId, 'voltaje': voltaje, 'corriente': corriente, 'posicionX': posicionX, 'posicionZ': posicionZ, 'temperatura': temperatura })
@@ -28,25 +38,9 @@ def obtenerDatos(client, userdata, message):
   print("Data:", data, " from rpi4 DIST")
   return data
 
+
 def saveValues(client, userdata, message):
-  return 0 
-# string_data = message.payload.decode('utf-8')
-  #json_data = json.loads(string_data)
-  #print("Topic received", string_data, json_data)
-  #print(json_data['ph'], json_data['conductividad'], json_data['riego'])
-  #try:
-    #ph = json_data['ph']
-    #conductividad = json_data['conductividad']
-    #riego = json_data['riego']
-    #print("ppm: {}, conductividad: {}, riego: {}".format(ph, conductividad, riego))
-    #con = DB.sql_connection()
-    #DB.addData(con,ph,conductividad,riego)
-    #global tiempoRiego
-    #tiempoRiego = riego
-    #print("GUARDO LA INFORMACION")
-    #print(DB.getAllDB())
-  #except:
-    #print("No relevant data was sent")
+  return 0
 
 
 def defaultCallback(client, userdata, message):
@@ -138,21 +132,17 @@ time.sleep(5)
 
 # Publish to the same topic in a loop forever
 loopCount = 0
-timeStart = time.time()/60
-#con = DB.sql_connection()
-tiempoObtenerBD = 10
+timeStart = time.time()
+
+tiempoMandarDatos = 15
 while True:
-	timeNow = time.time()/60
+	timeNow = time.time()
 	if args.mode == 'both' or args.mode == 'publish':
 		print(timeStart , timeNow)
-		if (timeStart - timeNow) % tiempoObtenerBD == 0:
-			print('!!!!!!')
-			print("REGANDO PLANTAS")
-		#if (timeStart - timeNow) % 1 == 0:
-		##python_object will contain the sensors data
-		#python_object = {'Device Id': 'raspberryPi4','time': time.time(),'Temperature': random.randint(0,10) }
-		#json_string = json.dumps(python_object)
-		datosPanel = obtenerDatos(1,1,1)
+		if (timeNow - timeStart) >= tiempoMandarDatos:
+			tiempoMandarDatos = timeNow
+			print("MANDAR DATOS")
+		        datosPanel = obtenerDatos(1,1,1)
 		#Mandar la informacion recolectada de los sensores...
 		try:
 			myAWSIoTMQTTClient.publish(topic1, datosPanel, 1)
@@ -163,4 +153,3 @@ while True:
 		if args.mode == 'publish':
 			print('Published topic %s: %s\n' % (topic1, json_string))
 		loopCount += 1
-	time.sleep(5)

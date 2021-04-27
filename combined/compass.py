@@ -89,8 +89,5 @@ class Compass:
     			elif(heading > 360.0):
         			heading = heading - 360.0
 
-    			print ("Heading Angle = %d" %heading)
-
-
-compass = Compass()
-compass.get_angle()
+    			#print ("Heading Angle = %d" %heading)
+			return heading

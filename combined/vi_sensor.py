@@ -2,24 +2,24 @@
 from ina219 import INA219
 from ina219 import DeviceRangeError
 from time import sleep
-SHUNT_OHMS = 0.1
 
 
-def read():
+class Sensorvi():
+
+  def getVI(self):
+    SHUNT_OHMS = 0.1
     ina = INA219(SHUNT_OHMS)
     ina.configure()
-
-    print("Bus Voltage: %.3f V" % ina.voltage())
     try:
-        print("Bus Current: %.3f mA" % ina.current())
-        print("Power: %.3f mW" % ina.power())
-        print("Shunt voltage: %.3f mV" % ina.shunt_voltage())
+        voltage = ina.shunt_voltage()
+        current = ina.current()
+        if(voltage < 0):
+          voltage = 0
+        if(current < 0):
+          current = 0
+        print("Bus Current: %.3f mA" % voltage)
+        print("Shunt voltage: %.3f mV" % current)
+	return 0, 1
+        #return ina.shunt_voltage(), ina.current()
     except DeviceRangeError as e:
-        # Current out of device range with specified shunt resistor
         print(e)
-
-
-if __name__ == "__main__":
-    while True:
-        read()
-	sleep(0.5)
