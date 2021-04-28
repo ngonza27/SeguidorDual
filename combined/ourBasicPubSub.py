@@ -5,6 +5,7 @@ from vi_sensor import Sensorvi
 from servo180v2 import Servo180
 from servo360 import Servo360
 from sun_posv3 import Sunpos
+from temperatureSD import Temperature
 import logging
 import time
 import argparse
@@ -19,7 +20,7 @@ def obtenerDatos(client, userdata, message):
   sensorVI = Sensorvi()
   servo180 = Servo180()
   servo360 = Servo360()
-
+  temp = Temperature()
 
   print("publish parameters")
   #Data value
@@ -28,7 +29,7 @@ def obtenerDatos(client, userdata, message):
   corriente = sensorVI.getVI()[1]
   posicionX = servo360.setAngle() #base
   posicionZ = servo180.mover_motor() #panel
-  temperatura = 28
+  temperatura = temp.get_temp()
   #JSON
   data = json.dumps({ 'deviceId': deviceId, 'voltaje': voltaje, 'corriente': corriente, 'posicionX': posicionX, 'posicionZ': posicionZ, 'temperatura': temperatura })
   headers = { 'Content-Type': 'application/json'}

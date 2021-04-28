@@ -198,18 +198,20 @@ anglesMap = {
 
 def mover_motor(angulo):
  print("angulo del motor:", angulo)
- #servo1.ChangeDutyCycle(anglesMap[angulo])
- #time.sleep(0.5)
- #servo1.ChangeDutyCycle(0)
+ servo1.ChangeDutyCycle(anglesMap[angulo])
+ time.sleep(0.5)
+ servo1.ChangeDutyCycle(0)
 
 
 while True:
  print("Ingrese altitud: ")
  altitud = int(input())
  if(altitud < 90):
-  mover_motor(altitud+90)
+  #mover_motor(altitud+90)
+  mover_motor(altitud)
  else:
-  mover_motor(180-altitud)
+  mover_motor(altitud)
+  #mover_motor(180-altitud)
 
 #Clean things up at the end
 servo1.stop()
