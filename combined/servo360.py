@@ -64,6 +64,9 @@ class Servo360:
     print("compass", compass.get_angle(), "az;", azimuth)
     global anguloBase
     if azimuth =< 90 and azimuth >= 0: #Primer cuadrante (N-E)
+      if anguloBase => 270 and anguloBase <= 359:
+        self.startingPos(compass)
+        anguloBase = 0
       if anguloBase < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
@@ -81,6 +84,9 @@ class Servo360:
       else:
         #
     if azimuth > 270 and azimuth <= 359: #Cuarto cuadrante (O-N)
+      if anguloBase >= 0 and angulo <= 90:
+        self.startingPos(compass)
+        anguloBase = 0
       if anguloBase < azimuth:
 	#
       else:
