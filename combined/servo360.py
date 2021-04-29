@@ -59,7 +59,6 @@ class Servo360:
     compass = Compass()
     #sunpos = Sunpos()
     #azimuth = sunpos.get_az_alt()[1]
-    #self.startingPos(compass)
     azimuth = 283
     print("compass", compass.get_angle(), "az;", azimuth)
     global anguloBase
@@ -80,17 +79,17 @@ class Servo360:
     if azimuth > 180 and azimuth <= 270: #Tercer cuadrante (S-O)
       azimuth = azimuth - 180
       if anguloBase < azimuth:
-        #
+        self.movePosAngles(compass, azimuth)
       else:
-        #
+        self.moveNegAngles(compass, azimuth)
     if azimuth > 270 and azimuth <= 359: #Cuarto cuadrante (O-N)
       if anguloBase >= 0 and angulo <= 90:
         self.startingPos(compass)
         anguloBase = 0
       if anguloBase < azimuth:
-	#
+       self.movePosAngles(compass, azimuth)
       else:
-        #
+       self.moveNegAngles(compass, azimuth)
     anguloBase = azimuth
     print("ANGULO BASE: ", self.getServoAngle())
     servo1.stop()
