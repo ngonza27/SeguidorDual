@@ -17,10 +17,14 @@ anguloBase = 0
 
 class Servo360:
 
-  def getServoAngle(self):
+  def getAngulobase(self):
 	global anguloBase
 	return anguloBase
 
+  def setAngulobase(self, angulo):
+        global anguloBase
+        anguloBase = angulo
+        return 0
 
   def movePosAngles(self, compass, azimuth):
     while (int(compass.get_angle()) < azimuth):
@@ -61,37 +65,43 @@ class Servo360:
     #azimuth = sunpos.get_az_alt()[1]
     azimuth = 283
     print("compass", compass.get_angle(), "az;", azimuth)
-    global anguloBase
-    if azimuth =< 90 and azimuth >= 0: #Primer cuadrante (N-E)
-      if anguloBase => 270 and anguloBase <= 359:
+    ultimaPosicion = self.getAngulobase()
+    if azimuth <= 90 and azimuth >= 0: #Primer cuadrante (N-E)
+      if ultimaPosicion >= 270 and ultimaPosicion <= 359:
         self.startingPos(compass)
-        anguloBase = 0
-      if anguloBase < azimuth:
+        self.setAngulobase(0)
+      if ultimaPosicion < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
         self.moveNegAngles(compass, azimuth)
     if azimuth > 90 and azimuth <= 180: #Segundo cuadrante (E-S)
+      if ultimaPosicion >= 0 and ultimaPosicion <= 90:
+        self.startingPos(compass)
+        self.setAngulobase(0)
       azimuth = azimuth + 180
-      if anguloBase < azimuth:
+      if ultimaPosicion < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
         self.moveNegAngles(compass, azimuth)
     if azimuth > 180 and azimuth <= 270: #Tercer cuadrante (S-O)
+      if ultimaPosicion >= 270 and ultimaPosicion <= 359:
+        self.startingPos(compass)
+        self.setAngulobase(0)
       azimuth = azimuth - 180
-      if anguloBase < azimuth:
+      if ultimaPosicion < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
         self.moveNegAngles(compass, azimuth)
     if azimuth > 270 and azimuth <= 359: #Cuarto cuadrante (O-N)
-      if anguloBase >= 0 and angulo <= 90:
+      if ulitmaPosicion >= 0 and angulo <= 90:
         self.startingPos(compass)
-        anguloBase = 0
-      if anguloBase < azimuth:
+        self.setAngulobase(0)
+      if ultimaPosicion < azimuth:
        self.movePosAngles(compass, azimuth)
       else:
        self.moveNegAngles(compass, azimuth)
-    anguloBase = azimuth
-    print("ANGULO BASE: ", self.getServoAngle())
+    self.setAngulobase(azimuth)
+    print("ANGULO BASE: ", self.getAnguloBase())
     servo1.stop()
     GPIO.cleanup()
     return self.getServoAngle()
