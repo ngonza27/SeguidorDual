@@ -13,7 +13,7 @@ servo1 = GPIO.PWM(38,50) # Note 11 is pin, 50 = 50Hz pulse
 
 #start PWM running, but with value of 0 (pulse off)
 servo1.start(0)
-anguloBase = 0
+anguloBase = 300
 
 class Servo360:
 
@@ -28,7 +28,7 @@ class Servo360:
 
   def movePosAngles(self, compass, azimuth):
     while (int(compass.get_angle()) < azimuth):
-      print("azimuth: ", azimuth, "compass angle: ", int(compass.get_angle()))
+      print("POS ,azimuth: ", azimuth, "compass angle: ", int(compass.get_angle()))
       servo1.ChangeDutyCycle(6.7)
       time.sleep(0.00333)
       servo1.ChangeDutyCycle(0)
@@ -36,8 +36,8 @@ class Servo360:
 
   def moveNegAngles(self, compass, azimuth):
     print("Moviendo angulos negativos!!")
-    while (int(compass.get_angle()) > azimuth):
-      print("angulo: ", int(compass.get_angle()), "anguloBASE:", anguloBase, "vuelta atras: ", vueltaAtras, " input ", input)
+    while (int(compass.get_angle()) > azimuth or int(compass.get_angle() == 0)):
+      print("NEG, angulo: ", int(compass.get_angle()), "aazimuth:", azimuth)
       servo1.ChangeDutyCycle(7.3)
       time.sleep(0.00333)
       servo1.ChangeDutyCycle(0)
@@ -45,14 +45,16 @@ class Servo360:
 
   def startingPos(self, compass):
     angle = compass.get_angle()
-
+    print("mover a posicion inicial")
     if angle > 0 and angle <= 90:
       while(int(compass.get_angle()) > 0):
+        print("NEG, moviendo a origen. Angulo actual: ", int(compass.get_angle()))
         servo1.ChangeDutyCycle(7.3)
         time.sleep(0.00333)
         servo1.ChangeDutyCycle(0)
     if angle > 270 and angle <= 359:
       while(int(compass.get_angle()) > 0):
+        print("POS moviendo a origen. Angulo actual: ", int(compass.get_angle()))
         servo1.ChangeDutyCycle(6.7)
         time.sleep(0.00333)
         servo1.ChangeDutyCycle(0)
@@ -63,49 +65,53 @@ class Servo360:
     compass = Compass()
     #sunpos = Sunpos()
     #azimuth = sunpos.get_az_alt()[1]
-    azimuth = 283
+    azimuth = 80
     print("compass", compass.get_angle(), "az;", azimuth)
     ultimaPosicion = self.getAngulobase()
+    print("Ultima posicion: ", ultimaPosicion)
     if azimuth <= 90 and azimuth >= 0: #Primer cuadrante (N-E)
       if ultimaPosicion >= 270 and ultimaPosicion <= 359:
         self.startingPos(compass)
-        self.setAngulobase(0)
+        ultimaPosicion = 0
+        print("Ultima posicion Primer cuadrante: ", ultimaPosicion)
       if ultimaPosicion < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
         self.moveNegAngles(compass, azimuth)
     if azimuth > 90 and azimuth <= 180: #Segundo cuadrante (E-S)
-      if ultimaPosicion >= 0 and ultimaPosicion <= 90:
+      if ultimaPosicion > 0 and ultimaPosicion <= 90:
         self.startingPos(compass)
-        self.setAngulobase(0)
+        ultimaPosicion = 0
       azimuth = azimuth + 180
       if ultimaPosicion < azimuth:
-        self.movePosAngles(compass, azimuth)
-      else:
         self.moveNegAngles(compass, azimuth)
+      else:
+        self.movePosAngles(compass, azimuth)
     if azimuth > 180 and azimuth <= 270: #Tercer cuadrante (S-O)
       if ultimaPosicion >= 270 and ultimaPosicion <= 359:
         self.startingPos(compass)
-        self.setAngulobase(0)
+        ultimaPosicion = 0
       azimuth = azimuth - 180
       if ultimaPosicion < azimuth:
         self.movePosAngles(compass, azimuth)
       else:
         self.moveNegAngles(compass, azimuth)
     if azimuth > 270 and azimuth <= 359: #Cuarto cuadrante (O-N)
-      if ulitmaPosicion >= 0 and angulo <= 90:
+      if ultimaPosicion > 0 and ultimaPosicion <= 90:
         self.startingPos(compass)
-        self.setAngulobase(0)
+        ulitmaPosicion = 0
       if ultimaPosicion < azimuth:
        self.movePosAngles(compass, azimuth)
       else:
        self.moveNegAngles(compass, azimuth)
     self.setAngulobase(azimuth)
-    print("ANGULO BASE: ", self.getAnguloBase())
+    print("ANGULO BASE: ", self.getAngulobase())
+    data = input()
     servo1.stop()
     GPIO.cleanup()
     return self.getServoAngle()
 
 
 sr = Servo360()
-sr.setAngle()
+while True:
+  sr.setAngle()
