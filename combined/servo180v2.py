@@ -204,13 +204,15 @@ class Servo180:
         179: 11.21300000000002,
         180: 11.260000000000021,
       }
+
       altitud = sunpos.get_az_alt()[0]
+      azimuth = sunpos.get_az_alt()[1]
+
+      if azimuth >= 270 and azimuth <= 90:
+        altitud = (90 - altitud) + 90
+
       if altitud < 0:
-	altitud = 0
-      if(altitud < 90):
-        altitud = altitud+90
-      else:
-        altitud = 180-altitud
+	altitud = 30
 
       servo1.ChangeDutyCycle(anglesMap[altitud])
       time.sleep(0.5)
