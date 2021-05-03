@@ -1,0 +1,72 @@
+<!---primera fila-->
+<div class="row holder">
+  <div class="col" id='temperatura'>
+    <ngx-gauge style="margin-top: 10px" [type]="gaugeType" 
+    [value]="gaugeValue" 
+    [label]="gaugeLabel"  
+    [append]="gaugeAppendText">
+    </ngx-gauge>
+    <div class="col">
+      <h2>Temperatura</h2>
+    </div>
+  </div>
+
+  <div class="col" id="voltaje">
+    <div class="row">
+    </div>
+    <br>
+    <div class="row">
+      <div class="col" id="show-data">
+        <span><h1>{{voltaje}} V</h1></span>
+      </div>
+    </div>
+    <div class="col">
+      <h2>Voltaje</h2>
+    </div>
+  </div>
+
+  <div class="col" id="corriente">
+    <div class="row">
+    </div>
+    <br>
+    <div class="row">
+      <div class="col"  id="show-data">
+        <span><h1>{{corriente}} A</h1></span>
+      </div>
+    </div>
+    <div class="col">
+      <h2>Corriente</h2>
+    </div>
+  </div>
+</div>
+
+<!---segunda fila-->
+<div class="row holder">
+  <div class="col" id="posicionX">
+    <div class="row">
+    </div>
+    <br>
+    <div class="row">
+      <div class="col">
+        <span><h1>{{posicionX}} °</h1></span>
+      </div>
+    </div>
+    <div class="col">
+      <h2>Posición Panel</h2>
+    </div>
+  </div>
+
+  <div class="col" id="posicionZ">
+    <div class="row">
+    </div>
+    <br>
+    <div class="row">
+      <div class="col">
+        <span><h1>{{posicionZ}} °</h1></span>
+      </div>
+    </div>
+    <div class="col">
+      <h2>Posición Base</h2>
+    </div>
+  </div>
+</div>

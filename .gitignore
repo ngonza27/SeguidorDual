@@ -1,2 +1,3 @@
 *.pyc
 /combined/*.pyc
+node_modules/

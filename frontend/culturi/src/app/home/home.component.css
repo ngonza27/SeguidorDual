@@ -1,0 +1,48 @@
+.holder{
+    margin: 5vh;
+}
+
+#show-data {
+    margin-top: 4vh;
+}
+
+h2 {
+    font-weight:800;
+}
+
+#temperatura{
+    text-align: center;
+    border-radius: 25px;
+    background-color:#D6D8E2;
+    margin-right: 2vh;
+}
+
+#voltaje{
+    text-align: center;
+    border-radius: 25px;
+    background-color:#D6D8E2;
+    margin-right: 2vh;
+}
+
+#corriente{
+    text-align: center;
+    border-radius: 25px;
+    background-color:#D6D8E2;
+}
+
+#posicionX{
+    margin-right: 2vh;
+    text-align: center;
+    border-radius: 25px;
+    background-color:#D6D8E2;
+    padding-top: 5vh;
+    padding-bottom: 6vh;
+}
+
+#posicionZ{
+    text-align: center;
+    border-radius: 25px;
+    background-color:#D6D8E2;
+    padding-top: 5vh;
+    padding-bottom: 6vh;
+}
