@@ -13,7 +13,7 @@ servo1 = GPIO.PWM(38,50) # Note 11 is pin, 50 = 50Hz pulse
 
 #start PWM running, but with value of 0 (pulse off)
 servo1.start(0)
-anguloBase = 300
+anguloBase = 0
 
 class Servo360:
 
@@ -63,12 +63,9 @@ class Servo360:
   def setAngle(self):
     print("Set angle")
     compass = Compass()
-    #sunpos = Sunpos()
-    #azimuth = sunpos.get_az_alt()[1]
-    azimuth = 80
-    print("compass", compass.get_angle(), "az;", azimuth)
+    sunpos = Sunpos()
+    azimuth = sunpos.get_az_alt()[1]
     ultimaPosicion = self.getAngulobase()
-    print("Ultima posicion: ", ultimaPosicion)
     if azimuth <= 90 and azimuth >= 0: #Primer cuadrante (N-E)
       if ultimaPosicion >= 270 and ultimaPosicion <= 359:
         self.startingPos(compass)
@@ -106,12 +103,11 @@ class Servo360:
        self.moveNegAngles(compass, azimuth)
     self.setAngulobase(azimuth)
     print("ANGULO BASE: ", self.getAngulobase())
-    data = input()
     servo1.stop()
     GPIO.cleanup()
-    return self.getServoAngle()
+    return self.getAnguloBase()
 
 
-sr = Servo360()
-while True:
-  sr.setAngle()
+#sr = Servo360()
+#while True:
+  #sr.setAngle()
