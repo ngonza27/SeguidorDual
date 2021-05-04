@@ -16,7 +16,7 @@ servo1.start(0)
 anguloBase = 0
 
 class Servo360:
-
+	
   def getAngulobase(self):
 	global anguloBase
 	return anguloBase
@@ -26,8 +26,19 @@ class Servo360:
         anguloBase = angulo
         return 0
 
+  def en_rango(self, numero_actual):
+	base = self.getAngulobase()
+	rango = range(base-2, base+3)
+	if base == 0 and (numero_actual == 359 or numero_actual == 358 or numero_actual == 1 or numero_actual == 2):
+	  return True
+	if (numero_actual in rango):
+	  return True
+	else:
+	  return False
+
+
   def movePosAngles(self, compass, azimuth):
-    while (int(compass.get_angle()) < azimuth):
+    while (int(compass.get_angle()) < azimuth or en_rango(int(compass.get_angle()))):
       print("POS ,azimuth: ", azimuth, "compass angle: ", int(compass.get_angle()))
       servo1.ChangeDutyCycle(6.7)
       time.sleep(0.00333)
@@ -36,7 +47,7 @@ class Servo360:
 
   def moveNegAngles(self, compass, azimuth):
     print("Moviendo angulos negativos!!")
-    while (int(compass.get_angle()) > azimuth or int(compass.get_angle() == 0)):
+    while (int(compass.get_angle()) > azimuth or en_rango(int(compass.get_angle()))):
       print("NEG, angulo: ", int(compass.get_angle()), "aazimuth:", azimuth)
       servo1.ChangeDutyCycle(7.3)
       time.sleep(0.00333)
