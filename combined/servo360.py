@@ -29,7 +29,7 @@ class Servo360:
   def en_rango(self, numero_actual):
 	base = self.getAngulobase()
 	rango = range(base-2, base+3)
-	if base == 0 and (numero_actual == 359 or numero_actual == 358 or numero_actual == 1 or numero_actual == 2):
+	if base == 0 and (numero_actual >= 358  or numero_actual <= 2):
 	  return True
 	if (numero_actual in rango):
 	  return True
