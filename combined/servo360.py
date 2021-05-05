@@ -1,22 +1,22 @@
 # Import libraries
 import RPi.GPIO as GPIO
 from compass import Compass
-from sun_posv3 import Sunpos
+#from sun_posv3 import Sunpos
 import time
 
 # Set GPIO numbering mode
 GPIO.setmode(GPIO.BOARD)
 
 # Set pin 11 as an output, and set servo1 as pin 11 as PWM
-GPIO.setup(38,GPIO.OUT)
-servo1 = GPIO.PWM(38,50) # Note 11 is pin, 50 = 50Hz pulse
+GPIO.setup(40,GPIO.OUT)
+servo1 = GPIO.PWM(40,50) # Note 11 is pin, 50 = 50Hz pulse
 
 #start PWM running, but with value of 0 (pulse off)
 servo1.start(0)
 anguloBase = 0
 
 class Servo360:
-	
+
   def getAngulobase(self):
 	global anguloBase
 	return anguloBase
@@ -28,8 +28,8 @@ class Servo360:
 
   def en_rango(self, numero_actual):
 	base = self.getAngulobase()
-	rango = range(base-2, base+3)
-	if base == 0 and (numero_actual >= 358  or numero_actual <= 2):
+	rango = range(base-4, base+5)
+	if base == 0 and (numero_actual >= 356  or numero_actual <= 4):
 	  return True
 	if (numero_actual in rango):
 	  return True
@@ -38,19 +38,19 @@ class Servo360:
 
 
   def movePosAngles(self, compass, azimuth):
-    while (int(compass.get_angle()) < azimuth or en_rango(int(compass.get_angle()))):
+    while (int(compass.get_angle()) > azimuth or self.en_rango(int(compass.get_angle()))):
       print("POS ,azimuth: ", azimuth, "compass angle: ", int(compass.get_angle()))
       servo1.ChangeDutyCycle(6.7)
-      time.sleep(0.00333)
+      time.sleep(0.333)
       servo1.ChangeDutyCycle(0)
 
 
   def moveNegAngles(self, compass, azimuth):
     print("Moviendo angulos negativos!!")
-    while (int(compass.get_angle()) > azimuth or en_rango(int(compass.get_angle()))):
+    while (int(compass.get_angle()) < azimuth or self.en_rango(int(compass.get_angle()))):
       print("NEG, angulo: ", int(compass.get_angle()), "aazimuth:", azimuth)
       servo1.ChangeDutyCycle(7.3)
-      time.sleep(0.00333)
+      time.sleep(0.333)
       servo1.ChangeDutyCycle(0)
 
 
@@ -71,11 +71,11 @@ class Servo360:
         servo1.ChangeDutyCycle(0)
     return 0
 
-  def setAngle(self):
+  def setAngle(self, ang):
     print("Set angle")
     compass = Compass()
-    sunpos = Sunpos()
-    azimuth = sunpos.get_az_alt()[1]
+    #sunpos = Sunpos()
+    azimuth = ang
     ultimaPosicion = self.getAngulobase()
     if azimuth <= 90 and azimuth >= 0: #Primer cuadrante (N-E)
       if ultimaPosicion >= 270 and ultimaPosicion <= 359:
@@ -83,9 +83,9 @@ class Servo360:
         ultimaPosicion = 0
         print("Ultima posicion Primer cuadrante: ", ultimaPosicion)
       if ultimaPosicion < azimuth:
-        self.movePosAngles(compass, azimuth)
-      else:
         self.moveNegAngles(compass, azimuth)
+      else:
+        self.movePosAngles(compass, azimuth)
     if azimuth > 90 and azimuth <= 180: #Segundo cuadrante (E-S)
       if ultimaPosicion > 0 and ultimaPosicion <= 90:
         self.startingPos(compass)
@@ -116,9 +116,11 @@ class Servo360:
     print("ANGULO BASE: ", self.getAngulobase())
     servo1.stop()
     GPIO.cleanup()
-    return self.getAnguloBase()
+    return self.getAngulobase()
 
 
-#sr = Servo360()
-#while True:
-  #sr.setAngle()
+sr = Servo360()
+while True:
+  print("inserte un angulo")
+  inputt = input()
+  sr.setAngle(inputt)
