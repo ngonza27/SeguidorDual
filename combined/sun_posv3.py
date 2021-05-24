@@ -15,7 +15,6 @@ class Sunpos:
 		lat = data[0]
 		lon = data[1]
 		alt, azm = sunpos(thetime, lat, lon, tz, dst=False)
-		print("Altitud:", alt, ", Azimuth:", azm)
+		#print("Altitud:", alt, ", Azimuth:", azm)
 		return alt, azm
-
 

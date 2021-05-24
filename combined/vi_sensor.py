@@ -17,8 +17,8 @@ class Sensorvi():
           voltage = 0
         if(current < 0):
           current = 0
-        print("Bus Current: %.3f mA" % voltage)
-        print("Shunt voltage: %.3f mV" % current)
-        return ina.shunt_voltage(), ina.current()
+        #print("Bus Current: %.3f mA" % voltage)
+        #print("Shunt voltage: %.3f mV" % current)
+        return voltage, current
     except DeviceRangeError as e:
         print(e)
