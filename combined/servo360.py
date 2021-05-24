@@ -8,8 +8,8 @@ import time
 GPIO.setmode(GPIO.BOARD)
 
 # Set pin 11 as an output, and set servo1 as pin 11 as PWM
-GPIO.setup(40,GPIO.OUT)
-servo1 = GPIO.PWM(40,50) # Note 11 is pin, 50 = 50Hz pulse
+GPIO.setup(38,GPIO.OUT)
+servo1 = GPIO.PWM(38,50) # Note 11 is pin, 50 = 50Hz pulse
 
 #start PWM running, but with value of 0 (pulse off)
 servo1.start(0)
@@ -100,17 +100,17 @@ class Servo360:
         ultimaPosicion = 0
       azimuth = azimuth - 180
       if ultimaPosicion < azimuth:
-        self.movePosAngles(compass, azimuth)
-      else:
         self.moveNegAngles(compass, azimuth)
+      else:
+        self.movePosAngles(compass, azimuth)
     if azimuth > 270 and azimuth <= 359: #Cuarto cuadrante (O-N)
       if ultimaPosicion > 0 and ultimaPosicion <= 90:
         self.startingPos(compass)
         ulitmaPosicion = 0
       if ultimaPosicion < azimuth:
-       self.movePosAngles(compass, azimuth)
-      else:
        self.moveNegAngles(compass, azimuth)
+      else:
+       self.movePosAngles(compass, azimuth)
     self.setAngulobase(azimuth)
     servo1.stop()
     GPIO.cleanup()
