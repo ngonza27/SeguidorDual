@@ -19,21 +19,21 @@ export class ParametrizacionComponent implements OnInit {
       var history = document.getElementById('history');
       for (var i = 0; i < base.length; i++) {
         var tr = "<tr>";
+        var dataDate = (new Date(base[i].timestamp * 1000)).toString()
         tr += "<th>" + base[i].solar_panel_data.temperatura + "</th>" 
             + "<th>" + base[i].solar_panel_data.posicionX + "</th>"
             + "<th>" + base[i].solar_panel_data.posicionZ + "</th>"
             + "<th>" + base[i].solar_panel_data.voltaje + "</th>" 
             + "<th>" + base[i].solar_panel_data.corriente + "</th>" 
+            + "<th>" + dataDate.substring(0, dataDate.indexOf('(')) + "</th>" 
             + "</tr>";
-            //TODO: AGREGAR CODIGO CSS <style>....</style>
         history.innerHTML += tr;
       }
-      console.log(base)
       this.history=base
     })
     setTimeout(
       function(){ 
       location.reload(); 
-      }, 50000);
+      }, 30000);
   }
 }

@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
     gaugeType = "semi";
     gaugeValue = 20;
+    gaugeLabel = ""
     gaugeAppendText = "°C";
     voltaje=10
     corriente=0.5
