@@ -134,13 +134,14 @@ time.sleep(5)
 loopCount = 0
 timeStart = time.time()
 
-tiempoMandarDatos = 5
+tiempoSegundos = 5 #Segundos
+tiempoMandarDatos = 5 #Tiempo inicial en segundos
 while True:
 	timeNow = time.time()
 	if args.mode == 'both' or args.mode == 'publish':
 		datosPanel = None
 		if (timeNow - timeStart) >= tiempoMandarDatos:
-			tiempoMandarDatos = timeNow
+			tiempoMandarDatos += tiempoSegundos
 			print("MANDAR DATOS")
 		        datosPanel = obtenerDatos(1,1,1)
 		#Mandar la informacion recolectada de los sensores...
