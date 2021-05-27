@@ -213,7 +213,7 @@ class Servo180:
       if azimuth <= 270 and azimuth >= 90:
         altitud = (90 - altitud) + 90
 
-      if altitud < 0 or altitud > 180:
+      if altitud < 30 or altitud > 150:
 	altitud = 30
 
       servo1.ChangeDutyCycle(anglesMap[altitud])
