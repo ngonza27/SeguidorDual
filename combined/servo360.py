@@ -59,13 +59,13 @@ class Servo360:
     angle = compass.get_angle()
     print("mover a posicion inicial")
     if angle > 0 and angle <= 90:
-      while(int(compass.get_angle()) > 0):
+      while(int(compass.get_angle()) > self.en_rango(0)):
         #print("NEG, moviendo a origen. Angulo actual: ", int(compass.get_angle()))
         servo1.ChangeDutyCycle(7.3)
         time.sleep(0.00333)
         servo1.ChangeDutyCycle(0)
     if angle > 270 and angle <= 359:
-      while(int(compass.get_angle()) > 0):
+      while(int(compass.get_angle()) > self.en_rango(0)):
         #print("POS moviendo a origen. Angulo actual: ", int(compass.get_angle()))
         servo1.ChangeDutyCycle(6.7)
         time.sleep(0.00333)
