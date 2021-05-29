@@ -43,8 +43,7 @@ class Servo360:
       servo1.ChangeDutyCycle(6.7)
       time.sleep(0.333)
       servo1.ChangeDutyCycle(0)
-      return 0
-
+    return 0
 
   def moveNegAngles(self, compass, azimuth):
     while (int(compass.get_angle()) < azimuth or self.en_rango(int(compass.get_angle()))):
@@ -52,8 +51,7 @@ class Servo360:
       servo1.ChangeDutyCycle(7.3)
       time.sleep(0.333)
       servo1.ChangeDutyCycle(0)
-      return 0
-
+    return 0
 
   def startingPos(self, compass):
     angle = compass.get_angle()
